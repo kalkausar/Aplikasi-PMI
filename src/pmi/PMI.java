@@ -15,7 +15,8 @@ public class PMI {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        RegistPMI A = new RegistPMI();
+        A.setVisible(true);
     }
     
 }
