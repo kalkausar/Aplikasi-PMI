@@ -17,6 +17,7 @@ public class PMI {
     public static void main(String[] args) {
         RegistPMI A = new RegistPMI();
         A.setVisible(true);
+        
     }
     
 }
