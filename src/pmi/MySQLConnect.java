@@ -16,7 +16,7 @@ public class MySQLConnect {
     public static Connection ConnectDb(){
         try{
             Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/tugas_sbd2_ganti?useSSL=false", "root", "susahamad321");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/tugas_sbd2_ganti?useSSL=false", "root", "");
             return conn;
         }
         catch(Exception e){
