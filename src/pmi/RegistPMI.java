@@ -4,19 +4,46 @@
  * and open the template in the editor.
  */
 package pmi;
+
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Kal Kausar
  */
-public class RegistPMI extends javax.swing.JFrame {
+public class RegistPMI extends javax.swing.JFrame  {
 public boolean databaru;
+Connection conn = null;
+
     /**
      * Creates new form RegistPMI
      */
     public RegistPMI() {
         initComponents();
+        conn = MySQLConnect.ConnectDb();
+        
+    }
+    
+    public void executeSQLQuery(String query, String message){
+        Connection conn = MySQLConnect.ConnectDb();
+        Statement st;
+        
+        try{
+            st = conn.createStatement();
+            if((st.executeUpdate(query)) == 1){
+                JOptionPane.showMessageDialog(null, "Data " + message + "Succesfully");
+            }
+            else
+                JOptionPane.showMessageDialog(null, "Data not " + message);
+        }
+        catch(Exception ex){
+            ex.printStackTrace();
+        }
     }
 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -73,6 +100,11 @@ public boolean databaru;
         JK_L.setLabel("Laki-Laki");
 
         JK_P.setLabel("Perempuan");
+        JK_P.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JK_PActionPerformed(evt);
+            }
+        });
 
         jLabel8.setText("Penghargaan");
 
@@ -85,6 +117,11 @@ public boolean databaru;
         jButton1.setText("Cancel");
 
         jButton2.setText("New");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         btn_submit.setText("Submit");
         btn_submit.addActionListener(new java.awt.event.ActionListener() {
@@ -95,8 +132,19 @@ public boolean databaru;
 
         jButton4.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jButton4.setText("Bank Darah");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel11.setText("Id Pendonor");
+
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -217,8 +265,50 @@ public boolean databaru;
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_submitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_submitActionPerformed
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        char JK;
+        if(JK_L.isSelected()){
+            JK = 'L';
+        }
+        else
+            JK = 'P';
+        
+        String query = "INSERT INTO `tpendonor` (`id_pendonor`, `nm_pendonor`, `jk`, `tgl_lahir`, `tmp_lahir`, `alamat`, `pekerjaan`, `penghargaan`, `donor_ke`, `tgl_terakhir`)"
+                + "VALUES ('"+jTextField1.getText()+"','"+user_Name.getText()+"','"+JK+"',"
+                +"'"+dateFormat.format(user_born.getDate())+"','"+user_place_birth.getText()+"','"+user_address.getText()+"',"
+                +"'"+user_work.getText()+"','"+user_appreciation.getText()+"','"+Integer.parseInt((String)jComboBox1.getSelectedItem())+"',"
+                +"'"+dateFormat.format(user_date_last.getDate())+"')";
+        executeSQLQuery(query, "Inserted: ");
     }//GEN-LAST:event_btn_submitActionPerformed
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void JK_PActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JK_PActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JK_PActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        jTextField1.setText(null);
+        user_Name.setText(null);
+        user_born.setCalendar(null);
+        user_place_birth.setText(null);
+        JK_L.setSelected(false);
+        JK_P.setSelected(false);
+        user_address.setText(null);
+        user_work.setText(null);
+        user_appreciation.setText(null);
+        jComboBox1.setSelectedIndex(0);
+        user_date_last.setCalendar(null);
+         
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -249,6 +339,7 @@ public boolean databaru;
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new RegistPMI().setVisible(true);
             }
