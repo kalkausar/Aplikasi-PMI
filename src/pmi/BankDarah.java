@@ -248,8 +248,8 @@ public class BankDarah extends javax.swing.JFrame {
         
         
         String noPend = jTextField6.getText();
-        String idPend = noPend.substring(1, 9) + '1';
-        String kdDarah = 'D' + noPend.substring(1, 9); 
+        String idPend = noPend.substring(1, 10) + noPend.charAt(9);
+        String kdDarah = 'D' + noPend.substring(1, 10); 
         
         query = "INSERT INTO `tdonor` (`no_pend`, `id_pendonor`, `kd_darah`, `tgl_donor`, `berat_badan`, `hb`, `tensi_sistole`, `tensi_diastole`)"
         + "VALUES ('"+jTextField6.getText()+"','"+idPend+"','"+kdDarah+"',"
